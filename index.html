@@ -166,7 +166,7 @@ body {
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
 
-/* Top floral strip - clipped to prevent spilling out over screen */
+/* Top floral strip */
 .header-floral {
   position: absolute; top: 0; left: 0; right: 0; height: 130px;
   pointer-events: none; overflow: hidden;
@@ -274,6 +274,10 @@ body {
 }
 .family-column {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Enforces strict layout alignment */
+  width: 100%;
 }
 .fam-side-title {
   font-family: 'Cinzel', serif;
@@ -289,6 +293,7 @@ body {
   font-weight: 500;
   color: var(--purple-deep);
   line-height: 1.5;
+  text-align: center;
 }
 .fam-relation {
   font-size: 0.8rem;
@@ -296,6 +301,7 @@ body {
   color: #8a7a9a;
   margin-top: 0.4rem;
   margin-bottom: 0.1rem;
+  text-align: center;
 }
 .fam-place {
   font-family: 'Cinzel', serif;
@@ -304,6 +310,7 @@ body {
   color: var(--gold);
   text-transform: uppercase;
   margin-top: 0.8rem;
+  text-align: center;
 }
 
 /* ORNAMENTAL DIVIDERS */
@@ -507,13 +514,14 @@ body {
 
 /* RESPONSIVE */
 @media (max-width: 550px) {
-  .family-grid { flex-direction: column; gap: 2.5rem; }
-  .family-grid::after { display: none; } /* Hide line on mobile view */
+  .family-grid { flex-direction: column; gap: 2.5rem; align-items: center; }
+  .family-column { align-items: center; text-align: center; width: 100%; }
+  .family-grid::after { display: none; }
 }
 @media (max-width: 480px) {
   .cd-num { min-width: 54px; font-size: 2rem; padding: 0.5rem; }
   .ev-time { font-size: 2.2rem; }
-  .venue-section { padding-bottom: 0.5rem; } /* Tightened lower padding */
+  .venue-section { padding-bottom: 0.5rem; }
 }
 </style>
 </head>
@@ -939,7 +947,7 @@ const musicIcon = document.getElementById('musicControlIcon');
 
 function playBGM(){
   weddingAudio.play().then(() => {
-    musicBtn.style.display = 'flex'; // Display audio toggle controls once song loads successfully
+    musicBtn.style.display = 'flex';
   }).catch(err => {
     console.log("Audio framework block encountered. Initializing display fallback for manual interactions.");
     musicBtn.style.display = 'flex'; 
@@ -947,6 +955,7 @@ function playBGM(){
   });
 }
 
+// Toggle logic
 function toggleMusic() {
   if (weddingAudio.paused) {
     weddingAudio.play();
@@ -977,7 +986,7 @@ function openInvite(){
   inv.classList.add('show');
   setTimeout(()=>inv.classList.add('visible'), 80);
 
-  // Core configuration for dynamic scroll animations 
+  // Intersection observer mapping
   setTimeout(()=>{
     const obs = new IntersectionObserver(entries=>{
       entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('on'); obs.unobserve(e.target); } });
@@ -985,7 +994,7 @@ function openInvite(){
     document.querySelectorAll('.fi').forEach(el=>obs.observe(el));
   }, 600);
 
-  // Initialize target live calendar date countdown
+  // Initialize countdown loops
   countdown();
 }
 
